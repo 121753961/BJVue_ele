@@ -23,6 +23,34 @@ var proxyTable = config.dev.proxyTable
 var app = express()
 var compiler = webpack(webpackConfig)
 
+// 模拟后台数据
+var appData = require('../data.json');
+var seller = appData.seller;
+var goods = appData.goods;
+
+var apiRoutes = express.Router();
+
+apiRoutes.get('/seller',function (req,res) {
+  res.json({
+    errno:0,
+    data:seller
+  });
+});
+
+apiRoutes.get('/goods',function (req,res) {
+  res.json({
+    errno:0,
+    data:goods
+  });
+});
+
+
+
+
+app.use('/api',apiRoutes);
+
+
+
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
   quiet: true
